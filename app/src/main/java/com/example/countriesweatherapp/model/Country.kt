@@ -16,16 +16,16 @@ data class Country(
     val subregion: String?,
 
     @SerializedName("population")
-    val population: Long,
+    val population: Long?,
 
     @SerializedName("flags")
-    val flags: Flags,
+    val flags: Flags?,
 
     @SerializedName("cca2")
-    val cca2: String,
+    val cca2: String?,
 
     @SerializedName("cca3")
-    val cca3: String,
+    val cca3: String?,
 
     @SerializedName("currencies")
     val currencies: Map<String, Currency>?,
@@ -47,16 +47,16 @@ data class Name(
 
 data class Flags(
     @SerializedName("png")
-    val png: String,
+    val png: String?,
 
     @SerializedName("svg")
-    val svg: String
+    val svg: String?
 )
 
 data class Currency(
     @SerializedName("name")
-    val name: String,
+    val name: String?,
 
     @SerializedName("symbol")
-    val symbol: String
+    val symbol: String?
 )

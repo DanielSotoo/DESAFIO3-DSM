@@ -35,8 +35,11 @@ class CountryAdapter(
         nameTextView.text = country.name.common
         capitalTextView.text = "Capital: ${country.capital?.firstOrNull() ?: "N/A"}"
 
+        // CORRECCIÓN: Usar operador seguro ?. para acceder a flags
         Glide.with(context)
-            .load(country.flags.png)
+            .load(country.flags?.png)
+            .placeholder(R.drawable.ic_region) // Imagen por defecto mientras carga
+            .error(R.drawable.ic_region) // Imagen si falla la carga
             .into(flagImageView)
 
         return itemView

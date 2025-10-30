@@ -58,35 +58,49 @@ class CountriesActivity : AppCompatActivity() {
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedCountry = countries[position]
-            val intent = Intent(this, CountryDetailActivity::class.java)
-            intent.putExtra("COUNTRY_NAME", selectedCountry.name.common)
-            intent.putExtra("COUNTRY_OFFICIAL_NAME", selectedCountry.name.official)
-            intent.putExtra("COUNTRY_CAPITAL", selectedCountry.capital?.firstOrNull() ?: "")
-            intent.putExtra("COUNTRY_REGION", selectedCountry.region)
-            intent.putExtra("COUNTRY_SUBREGION", selectedCountry.subregion ?: "N/A")
-            intent.putExtra("COUNTRY_POPULATION", selectedCountry.population)
-            intent.putExtra("COUNTRY_FLAG", selectedCountry.flags.png)
-            intent.putExtra("COUNTRY_CCA2", selectedCountry.cca2)
-            intent.putExtra("COUNTRY_CCA3", selectedCountry.cca3)
+            try {
+                val selectedCountry = countries[position]
+                val intent = Intent(this, CountryDetailActivity::class.java)
 
-            // Convertir monedas a String
-            val currencies = selectedCountry.currencies?.values?.joinToString(", ") {
-                "${it.name} (${it.symbol})"
-            } ?: "N/A"
-            intent.putExtra("COUNTRY_CURRENCIES", currencies)
+                // Validaciones robustas para evitar crashes
+                intent.putExtra("COUNTRY_NAME", selectedCountry.name.common)
+                intent.putExtra("COUNTRY_OFFICIAL_NAME", selectedCountry.name.official)
+                intent.putExtra("COUNTRY_CAPITAL", selectedCountry.capital?.firstOrNull() ?: "N/A")
+                intent.putExtra("COUNTRY_REGION", selectedCountry.region)
+                intent.putExtra("COUNTRY_SUBREGION", selectedCountry.subregion ?: "N/A")
+                intent.putExtra("COUNTRY_POPULATION", selectedCountry.population ?: 0L)
+                intent.putExtra("COUNTRY_FLAG", selectedCountry.flags?.png ?: "")
+                intent.putExtra("COUNTRY_CCA2", selectedCountry.cca2 ?: "")
+                intent.putExtra("COUNTRY_CCA3", selectedCountry.cca3 ?: "")
 
-            // Convertir idiomas a String
-            val languages = selectedCountry.languages?.values?.joinToString(", ") ?: "N/A"
-            intent.putExtra("COUNTRY_LANGUAGES", languages)
+                // Convertir monedas a String con validación
+                val currencies = try {
+                    selectedCountry.currencies?.values?.joinToString(", ") {
+                        "${it.name ?: "N/A"} (${it.symbol ?: "N/A"})"
+                    } ?: "N/A"
+                } catch (e: Exception) {
+                    "N/A"
+                }
+                intent.putExtra("COUNTRY_CURRENCIES", currencies)
 
-            // Coordenadas
-            val lat = selectedCountry.latlng?.getOrNull(0) ?: 0.0
-            val lng = selectedCountry.latlng?.getOrNull(1) ?: 0.0
-            intent.putExtra("COUNTRY_LAT", lat)
-            intent.putExtra("COUNTRY_LNG", lng)
+                // Convertir idiomas a String con validación
+                val languages = try {
+                    selectedCountry.languages?.values?.joinToString(", ") ?: "N/A"
+                } catch (e: Exception) {
+                    "N/A"
+                }
+                intent.putExtra("COUNTRY_LANGUAGES", languages)
 
-            startActivity(intent)
+                // Coordenadas con validación
+                val lat = selectedCountry.latlng?.getOrNull(0) ?: 0.0
+                val lng = selectedCountry.latlng?.getOrNull(1) ?: 0.0
+                intent.putExtra("COUNTRY_LAT", lat)
+                intent.putExtra("COUNTRY_LNG", lng)
+
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error al abrir país: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

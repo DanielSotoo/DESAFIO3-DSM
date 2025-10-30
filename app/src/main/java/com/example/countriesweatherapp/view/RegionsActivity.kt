@@ -21,7 +21,7 @@ class RegionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_regions)
 
-        supportActionBar?.title = "Selecciona una Región"
+        supportActionBar?.title = "Clima del mundo "
 
         listView = findViewById(R.id.listViewRegions)
         progressBar = findViewById(R.id.progressBar)
