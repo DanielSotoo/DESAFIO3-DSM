@@ -10,4 +10,4 @@
 ---
 
 ### Link del apk:
-*[Link de Drive:]* (https://drive.google.com/file/d/14wSBdv20ITt9OV3FeWJBm02d_0tD_MWL/view?usp=sharing)
+*Link de Drive:* https://drive.google.com/file/d/14wSBdv20ITt9OV3FeWJBm02d_0tD_MWL/view?usp=sharing
